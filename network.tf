@@ -45,7 +45,7 @@ resource "azurerm_network_security_rule" "sg_rule2" {
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
-    source_port_range          = "4000"
+    source_port_range          = "5000"
     destination_port_range     = "5000"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
@@ -54,13 +54,13 @@ resource "azurerm_network_security_rule" "sg_rule2" {
 }
 
 resource "azurerm_network_security_rule" "sg_rule3" {
-  name                       = "grafana-loki"
+  name                       = "grafana"
     priority                   = 102
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "3000"
-    destination_port_range     = "3100"
+    destination_port_range     = "3000"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
     resource_group_name = azurerm_resource_group.final_resource.name
@@ -73,8 +73,50 @@ resource "azurerm_network_security_rule" "sg_rule4" {
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
-    source_port_range          = "9000"
+    source_port_range          = "9090"
+    destination_port_range     = "9090"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    resource_group_name = azurerm_resource_group.final_resource.name
+    network_security_group_name = azurerm_network_security_group.internal_sec_groups.name
+}
+
+resource "azurerm_network_security_rule" "sg_rule5" {
+  name                       = "nodeexporter"
+    priority                   = 104
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "9091"
     destination_port_range     = "9091"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    resource_group_name = azurerm_resource_group.final_resource.name
+    network_security_group_name = azurerm_network_security_group.internal_sec_groups.name
+}
+
+resource "azurerm_network_security_rule" "sg_rule6" {
+  name                       = "loki"
+    priority                   = 105
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "3100"
+    destination_port_range     = "3100"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    resource_group_name = azurerm_resource_group.final_resource.name
+    network_security_group_name = azurerm_network_security_group.internal_sec_groups.name
+}
+
+resource "azurerm_network_security_rule" "sg_rule7" {
+  name                       = "dev-proj"
+    priority                   = 106
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "4000"
+    destination_port_range     = "4000"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
     resource_group_name = azurerm_resource_group.final_resource.name
