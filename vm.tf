@@ -18,10 +18,15 @@ resource "azurerm_linux_virtual_machine" "vm_eduvalor" {
   size                = "Standard_B2s"
   admin_username      = "eduvalor371"
   admin_password      = var.az_server_password
-  disable_password_authentication = false
+  disable_password_authentication = true
   network_interface_ids = [
     azurerm_network_interface.eduvalor_interface_ntw.id,
   ]
+
+  admin_ssh_key {
+    username   = "eduvalor371"
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
 
   os_disk {
     caching              = "ReadWrite"
