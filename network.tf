@@ -9,14 +9,14 @@ resource "azurerm_subnet" "subnet_internalA" {
   name                 = "subnetA"
   resource_group_name  = azurerm_resource_group.final_resource.name
   virtual_network_name = azurerm_virtual_network.vt_network.name
-  address_prefixes     = ["10.0.2.0/24"]
+  address_prefixes     = ["10.0.1.0/24"]
 }
 
-resource "azurerm_subnet" "subnet_internalB" {
-  name                 = "subnetB"
-  resource_group_name  = azurerm_resource_group.final_resource.name
-  virtual_network_name = azurerm_virtual_network.vt_network.name
-  address_prefixes     = ["10.0.3.0/24"]
+resource "azurerm_public_ip" "public_ip" {
+  name                = "acceptanceTestPublicIp1"
+  resource_group_name = azurerm_resource_group.final_resource.name
+  location            = azurerm_resource_group.final_resource.location
+  allocation_method   = "Dynamic"
 }
 
 resource "azurerm_network_security_group" "internal_sec_groups" {
@@ -25,6 +25,19 @@ resource "azurerm_network_security_group" "internal_sec_groups" {
   resource_group_name = azurerm_resource_group.final_resource.name
 }
 
+resource "azurerm_network_security_rule" "sg_rule0" {
+  name                       = "SSH"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    resource_group_name = azurerm_resource_group.final_resource.name
+    network_security_group_name = azurerm_network_security_group.internal_sec_groups.name
+}
 resource "azurerm_network_security_rule" "sg_rule1" {
   name                       = "reverse-prox"
     priority                   = 100
@@ -121,11 +134,4 @@ resource "azurerm_network_security_rule" "sg_rule7" {
     destination_address_prefix = "*"
     resource_group_name = azurerm_resource_group.final_resource.name
     network_security_group_name = azurerm_network_security_group.internal_sec_groups.name
-}
-
-resource "azurerm_public_ip" "public_ip" {
-  name                = "acceptanceTestPublicIp1"
-  resource_group_name = azurerm_resource_group.final_resource.name
-  location            = azurerm_resource_group.final_resource.location
-  allocation_method   = "Static"
 }
