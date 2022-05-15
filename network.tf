@@ -101,7 +101,7 @@ resource "azurerm_network_security_rule" "sg_rule5" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = "9091"
+    destination_port_range     = "9100"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
     resource_group_name = azurerm_resource_group.final_resource.name
@@ -130,6 +130,34 @@ resource "azurerm_network_security_rule" "sg_rule7" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "4000"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    resource_group_name = azurerm_resource_group.final_resource.name
+    network_security_group_name = azurerm_network_security_group.internal_sec_groups.name
+}
+
+resource "azurerm_network_security_rule" "sg_rule8" {
+  name                       = "mino"
+    priority                   = 107
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "9000"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    resource_group_name = azurerm_resource_group.final_resource.name
+    network_security_group_name = azurerm_network_security_group.internal_sec_groups.name
+}
+
+resource "azurerm_network_security_rule" "sg_rule9" {
+  name                       = "mino-2"
+    priority                   = 108
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "9001"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
     resource_group_name = azurerm_resource_group.final_resource.name
