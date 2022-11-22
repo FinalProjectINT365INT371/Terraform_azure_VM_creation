@@ -137,7 +137,7 @@ resource "azurerm_network_security_rule" "sg_rule7" {
 }
 
 resource "azurerm_network_security_rule" "sg_rule11" {
-  name                       = "frontend-dev"
+  name                       = "swagger-ui"
     priority                   = 110
     direction                  = "Inbound"
     access                     = "Allow"
@@ -158,6 +158,34 @@ resource "azurerm_network_security_rule" "sg_rule12" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "9080"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    resource_group_name = azurerm_resource_group.final_resource.name
+    network_security_group_name = azurerm_network_security_group.internal_sec_groups.name
+}
+
+resource "azurerm_network_security_rule" "sg_rule13" {
+  name                       = "portainer-port"
+    priority                   = 112
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "9000"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+    resource_group_name = azurerm_resource_group.final_resource.name
+    network_security_group_name = azurerm_network_security_group.internal_sec_groups.name
+}
+
+resource "azurerm_network_security_rule" "sg_rule14" {
+  name                       = "portainer-port-agent"
+    priority                   = 113
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "8000"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
     resource_group_name = azurerm_resource_group.final_resource.name
